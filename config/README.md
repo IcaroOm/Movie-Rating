@@ -97,3 +97,5 @@ curl -X POST -H "Authorization: Bearer <token>" \
   -d '{"movie": 1, "text": "This movie was great!"}' \
   http://localhost:8000/api/reviews/
 ```
+
+
