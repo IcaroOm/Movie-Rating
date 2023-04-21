@@ -1,6 +1,5 @@
-from django.db import models
-
-# Create your models here.
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -63,3 +62,12 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+
+class Review(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    created_at = models.DateTimeField('Criado em', auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.movie} - {self.value} - {self.created_at}'
