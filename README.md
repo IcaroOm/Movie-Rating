@@ -6,7 +6,7 @@ Build a movie rating API with Django and Django Rest Framework (DRF) that allows
 - `/api/movies/<int:pk>/`: Returns details of a specific movie, including its title, description, release date, and rating.
 - `/api/reviews/`: Returns a list of all movie reviews, including the user's name, the movie title, and the review text.
 - `/api/reviews/<int:pk>/`: Returns details of a specific review, including the user's name, the movie title, and the review text.
-- `/api/ratings/`: Allows users to submit a rating for a movie, with the following fields: movie id (foreign key to movie), rating (1-5), and user (foreign key to user).
+- `/api/ratings/`: Allows users to submit a rating for a movie, with the following fields: movie id (foreign key to movie), rating (0-10), and user (foreign key to user).
 - `/api/reviews/`: Allows users to submit a review for a movie, with the following fields: movie id (foreign key to movie), review text, and user (foreign key to user).
 
 ## Getting Started
