@@ -1,13 +1,9 @@
-name: Django CI
+name: Django-Test
 
-on:
-  push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+on: [pull_request, push]
 
 jobs:
-  build:
+  test_project:
 
     runs-on: ubuntu-latest
     strategy:
