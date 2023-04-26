@@ -13,10 +13,14 @@ class Movie(models.Model):
     plot = models.TextField(null=True, blank=True)
     tagline = models.CharField(max_length=200, null=True, blank=True)
     genres = models.ManyToManyField('Genre', related_name='movies')
-    directors = models.ManyToManyField('Person', related_name='directed_movies')
+    directors = models.ManyToManyField(
+        'Person', related_name='directed_movies'
+    )
     writers = models.ManyToManyField('Person', related_name='written_movies')
-    actors = models.ManyToManyField('Person', through='Role', related_name='movies')
-    countries = models.ManyToManyField('Country', related_name='movies')
+    actors = models.ManyToManyField(
+        'Person', through='Role', related_name='movies'
+    )
+    countries = models.ForeignKey('Country', on_delete=models.CASCADE)
     languages = models.ManyToManyField('Language', related_name='movies')
     budget = models.BigIntegerField(null=True, blank=True)
     gross = models.BigIntegerField(null=True, blank=True)
@@ -63,10 +67,16 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
+
 class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    value = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0), MaxValueValidator(10)])
+    value = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+    )
+    review = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
 
     def __str__(self):

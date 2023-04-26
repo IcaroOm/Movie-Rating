@@ -9,24 +9,24 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("movie_review", "0001_initial"),
+        ('movie_review', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Review",
+            name='Review',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
                 (
-                    "value",
+                    'value',
                     models.FloatField(
                         blank=True,
                         null=True,
@@ -37,18 +37,20 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "created_at",
-                    models.DateTimeField(auto_now_add=True, verbose_name="Criado em"),
-                ),
-                (
-                    "movie",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="movie_review.movie",
+                    'created_at',
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name='Criado em'
                     ),
                 ),
                 (
-                    "user",
+                    'movie',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to='movie_review.movie',
+                    ),
+                ),
+                (
+                    'user',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
