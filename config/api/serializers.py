@@ -1,5 +1,13 @@
 from rest_framework import serializers
-from movie_review.models import Movie, Genre, Person, Language, Country, Role, Review
+from movie_review.models import (
+    Movie,
+    Genre,
+    Person,
+    Language,
+    Country,
+    Role,
+    Review,
+)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -36,3 +44,23 @@ class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language
         fields = '__all__'
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    genres = GenreSerializer(many=True)
+    directors = PersonSerializer(many=True)
+    writers = PersonSerializer(many=True)
+    actors = serializers.SerializerMethodField()
+    countries = serializers.StringRelatedField(many=True)
+    languages = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+    def get_actors(self, obj):
+        roles = obj.role_set.all()
+        return [
+            {'name': role.actor.name, 'character': role.character}
+            for role in roles
+        ]

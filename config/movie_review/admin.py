@@ -11,7 +11,14 @@ class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'year', 'rating', 'votes')
     list_filter = ('year', 'genres', 'countries', 'languages')
     search_fields = (
-    'title', 'genres__name', 'directors__name', 'writers__name', 'actors__name', 'countries__name', 'languages__name')
+        'title',
+        'genres__name',
+        'directors__name',
+        'writers__name',
+        'actors__name',
+        'countries__name',
+        'languages__name',
+    )
     inlines = [RoleInline]
 
 
