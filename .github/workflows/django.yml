@@ -25,4 +25,5 @@ jobs:
         poetry install
     - name: Run Tests
       run: |
-        pytest -x -vv
+        cd config
+        make test
