@@ -39,11 +39,14 @@ jobs:
       # install your root project, if required
       #----------------------------------------------
       - name: Install project
-        run: poetry install --no-interaction
+        run: |
+          cd config
+          poetry install --no-interaction
       #----------------------------------------------
       #              run test suite
       #----------------------------------------------
       - name: Run tests
         run: |
+          cd config
           source .venv/bin/activate
           pytest .
