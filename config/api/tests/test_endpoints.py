@@ -32,3 +32,7 @@ def test_movies_healthcheck(db, client):
 def test_review_healthcheck(db, client):
     response = client.get(f'/api/reviews/')
     assert response.status_code == 200
+
+
+def test_broken(db, client):
+    assert 1 == 2
