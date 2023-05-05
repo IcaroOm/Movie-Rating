@@ -51,7 +51,7 @@ class MovieSerializer(serializers.ModelSerializer):
     directors = PersonSerializer(many=True)
     writers = PersonSerializer(many=True)
     actors = serializers.SerializerMethodField()
-    countries = serializers.StringRelatedField(many=True)
+    countries = CountrySerializer(many=False)
     languages = serializers.StringRelatedField(many=True)
 
     class Meta:
