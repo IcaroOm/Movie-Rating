@@ -6,12 +6,27 @@ import pytest
 
 
 @pytest.fixture
+def user_test(db):
+    user = User.objects.create_user(
+        username='joca', password='minhasenhasecreta'
+    )
+    return user
+
+
+@pytest.fixture
+def token_test(db, user_test):
+    token = Token.objects.get(user=user_test)
+    return token
+
+
+@pytest.fixture
 def auth_api_client(db):
     api_client = APIClient()
     user = User.objects.create_user(username='testuser', password='testpass')
     token = Token.objects.create(user=user)
     api_client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
     return api_client, user
+
 
 @pytest.fixture
 def movie_one(db):
@@ -70,3 +85,17 @@ def test_movie_retrieve(db, client, movie_one):
     response = client.get(f'/api/movies/')
     print(response.data)
     assert 2 == 2
+
+
+def test_login_auth(db, user_test, token_test, client):
+    data = {'username': 'joca', 'password': 'minhasenhasecreta'}
+    response = client.post('/api/login-auth-token/', data=data)
+    print(response.data)
+    assert response.data['token'] == token_test.key
+
+
+def test_login_declined(db, client):
+    data = {'username': 'test', 'password': 'minhasenhaerrada'}
+    response = client.post('/api/login-auth-token/', data=data)
+    print(response.data)
+    assert response.status_code == 400

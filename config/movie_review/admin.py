@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, Genre, Person, Role, Country, Language, Review
+from .models import Movie, Genre, Person, Role, Country, Language, Review, Profile
 
 
 class RoleInline(admin.TabularInline):
@@ -44,6 +44,13 @@ class LanguageAdmin(admin.ModelAdmin):
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('movie', 'value')
+
+
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profile'
+    fk_name = 'user'
 
 
 admin.site.register(Movie, MovieAdmin)
