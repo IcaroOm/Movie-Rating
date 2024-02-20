@@ -9,18 +9,46 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('movie_review', '0003_review_review_remove_movie_countries_movie_countries'),
+        (
+            'movie_review',
+            '0003_review_review_remove_movie_countries_movie_countries',
+        ),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Profile',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_staff', models.BooleanField(default=False, verbose_name='Staff')),
-                ('is_admin', models.BooleanField(default=False, verbose_name='Admin')),
-                ('is_reviewer', models.BooleanField(default=False, verbose_name='Reviewer')),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'is_staff',
+                    models.BooleanField(default=False, verbose_name='Staff'),
+                ),
+                (
+                    'is_admin',
+                    models.BooleanField(default=False, verbose_name='Admin'),
+                ),
+                (
+                    'is_reviewer',
+                    models.BooleanField(
+                        default=False, verbose_name='Reviewer'
+                    ),
+                ),
+                (
+                    'user',
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

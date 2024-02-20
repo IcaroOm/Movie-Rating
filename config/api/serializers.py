@@ -38,6 +38,25 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
+        read_only_fields = ['user']
+
+    def validate(self, data):
+        user = self.context['request'].user
+        movie = data['movie']
+
+        # Check if the user has already reviewed the movie
+        existing_review = (
+            Review.objects.filter(user=user, movie=movie)
+            .exclude(pk=self.instance.pk if self.instance else None)
+            .first()
+        )
+
+        if existing_review:
+            raise serializers.ValidationError(
+                'You have already reviewed this movie.'
+            )
+
+        return data
 
 
 class LanguageSerializer(serializers.ModelSerializer):

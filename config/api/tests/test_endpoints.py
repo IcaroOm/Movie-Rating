@@ -1,4 +1,12 @@
-from movie_review.models import Movie, Review, Genre, Person, Country, Language, Role
+from movie_review.models import (
+    Movie,
+    Review,
+    Genre,
+    Person,
+    Country,
+    Language,
+    Role,
+)
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
@@ -11,6 +19,15 @@ def user_test(db):
         username='joca', password='minhasenhasecreta'
     )
     return user
+
+
+@pytest.fixture
+def client_review(db, user_test):
+    api_client = APIClient()
+    token = Token.objects.get(user=user_test)
+    api_client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+    user_test.save()
+    return api_client
 
 
 @pytest.fixture
@@ -46,12 +63,9 @@ def movie_one(db):
         countries=country_one,
         budget=123_456_789,
         gross=987_654_321,
-
     )
     role_one = Role.objects.create(
-        movie=movie_one,
-        actor=person_one,
-        character='Character One'
+        movie=movie_one, actor=person_one, character='Character One'
     )
     movie_one.actors.add(person_one)
     movie_one.directors.add(person_one)
@@ -62,13 +76,22 @@ def movie_one(db):
 
 
 @pytest.fixture
-def review_one(db, movie_one):
-    return Review.object.create(
+def review_one(db, movie_one, user_test):
+    return Review.objects.create(
         movie=movie_one,
-        user=auth_api_client.user,
+        user=user_test,
         value=2,
         review='Review One test',
     )
+
+
+@pytest.fixture
+def review_data(db, movie_one):
+    return {
+        "movie": "1",
+        "value": "2",
+        "review": "Review One test"
+    }
 
 
 def test_movies_healthcheck(db, client):
@@ -83,19 +106,35 @@ def test_review_healthcheck(db, client):
 
 def test_movie_retrieve(db, client, movie_one):
     response = client.get(f'/api/movies/')
-    print(response.data)
-    assert 2 == 2
+    assert response.data[0]['title'] == movie_one.title
+
+
+def test_review_retrieve(db, client, review_one):
+    response = client.get(f'/api/reviews/')
 
 
 def test_login_auth(db, user_test, token_test, client):
     data = {'username': 'joca', 'password': 'minhasenhasecreta'}
     response = client.post('/api/login-auth-token/', data=data)
-    print(response.data)
     assert response.data['token'] == token_test.key
 
 
 def test_login_declined(db, client):
     data = {'username': 'test', 'password': 'minhasenhaerrada'}
     response = client.post('/api/login-auth-token/', data=data)
-    print(response.data)
     assert response.status_code == 400
+
+
+def test_review_post(
+    db, client_review, client, review_data, user_test, movie_one
+):
+    response_post = client_review.post('/api/reviews/', data=review_data)
+    response_get = client.get('/api/reviews/')
+    assert response_post.status_code == 201
+    assert response_get.data[0]['value'] == 2.0
+    assert response_get.data[0]['user'] == user_test.id
+
+
+def test_review_post_declined(db, client, review_data):
+    response = client.post('/api/reviews/', data=review_data)
+    assert response.status_code == 401
