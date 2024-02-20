@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import Movie, Genre, Person, Role, Country, Language, Review, Profile
+from .models import (
+    Movie,
+    Genre,
+    Person,
+    Role,
+    Country,
+    Language,
+    Review,
+    Profile,
+)
 
 
 class RoleInline(admin.TabularInline):

@@ -82,6 +82,10 @@ class Review(models.Model):
     review = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField('Criado em', auto_now_add=True)
 
+    class Meta:
+
+        unique_together = ('user', 'movie')
+
     def __str__(self):
         return f'{self.movie} - {self.value} - {self.created_at}'
 
@@ -102,4 +106,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
         Token.objects.create(user=instance)
     instance.profile.save()
-
