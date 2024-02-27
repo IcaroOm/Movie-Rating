@@ -11,160 +11,163 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Country",
+            name='Country',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("name", models.CharField(max_length=50, unique=True)),
+                ('name', models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name="Genre",
+            name='Genre',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("name", models.CharField(max_length=50, unique=True)),
+                ('name', models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name="Language",
+            name='Language',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("name", models.CharField(max_length=50, unique=True)),
+                ('name', models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name="Movie",
+            name='Movie',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("title", models.CharField(max_length=200)),
-                ("year", models.IntegerField()),
-                ("runtime", models.IntegerField(blank=True, null=True)),
-                ("rating", models.FloatField(blank=True, null=True)),
-                ("votes", models.IntegerField(blank=True, null=True)),
-                ("metascore", models.IntegerField(blank=True, null=True)),
-                ("plot", models.TextField(blank=True, null=True)),
-                ("tagline", models.CharField(blank=True, max_length=200, null=True)),
-                ("budget", models.BigIntegerField(blank=True, null=True)),
-                ("gross", models.BigIntegerField(blank=True, null=True)),
+                ('title', models.CharField(max_length=200)),
+                ('year', models.IntegerField()),
+                ('runtime', models.IntegerField(blank=True, null=True)),
+                ('rating', models.FloatField(blank=True, null=True)),
+                ('votes', models.IntegerField(blank=True, null=True)),
+                ('metascore', models.IntegerField(blank=True, null=True)),
+                ('plot', models.TextField(blank=True, null=True)),
+                (
+                    'tagline',
+                    models.CharField(blank=True, max_length=200, null=True),
+                ),
+                ('budget', models.BigIntegerField(blank=True, null=True)),
+                ('gross', models.BigIntegerField(blank=True, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name="Person",
+            name='Person',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("name", models.CharField(max_length=100)),
+                ('name', models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name="Role",
+            name='Role',
             fields=[
                 (
-                    "id",
+                    'id',
                     models.BigAutoField(
                         auto_created=True,
                         primary_key=True,
                         serialize=False,
-                        verbose_name="ID",
+                        verbose_name='ID',
                     ),
                 ),
-                ("character", models.CharField(max_length=100)),
+                ('character', models.CharField(max_length=100)),
                 (
-                    "actor",
+                    'actor',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="movie_review.person",
+                        to='movie_review.person',
                     ),
                 ),
                 (
-                    "movie",
+                    'movie',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="movie_review.movie",
+                        to='movie_review.movie',
                     ),
                 ),
             ],
         ),
         migrations.AddField(
-            model_name="movie",
-            name="actors",
+            model_name='movie',
+            name='actors',
             field=models.ManyToManyField(
-                related_name="movies",
-                through="movie_review.Role",
-                to="movie_review.person",
+                related_name='movies',
+                through='movie_review.Role',
+                to='movie_review.person',
             ),
         ),
         migrations.AddField(
-            model_name="movie",
-            name="countries",
+            model_name='movie',
+            name='countries',
             field=models.ManyToManyField(
-                related_name="movies", to="movie_review.country"
+                related_name='movies', to='movie_review.country'
             ),
         ),
         migrations.AddField(
-            model_name="movie",
-            name="directors",
+            model_name='movie',
+            name='directors',
             field=models.ManyToManyField(
-                related_name="directed_movies", to="movie_review.person"
+                related_name='directed_movies', to='movie_review.person'
             ),
         ),
         migrations.AddField(
-            model_name="movie",
-            name="genres",
+            model_name='movie',
+            name='genres',
             field=models.ManyToManyField(
-                related_name="movies", to="movie_review.genre"
+                related_name='movies', to='movie_review.genre'
             ),
         ),
         migrations.AddField(
-            model_name="movie",
-            name="languages",
+            model_name='movie',
+            name='languages',
             field=models.ManyToManyField(
-                related_name="movies", to="movie_review.language"
+                related_name='movies', to='movie_review.language'
             ),
         ),
         migrations.AddField(
-            model_name="movie",
-            name="writers",
+            model_name='movie',
+            name='writers',
             field=models.ManyToManyField(
-                related_name="written_movies", to="movie_review.person"
+                related_name='written_movies', to='movie_review.person'
             ),
         ),
     ]
