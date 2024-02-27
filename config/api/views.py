@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
-from api.serializers import MovieSerializer, ReviewSerializer
+from django.contrib.auth.models import User
+from api.serializers import MovieSerializer, ReviewSerializer, UserSerializer
 from movie_review.models import Movie, Review
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import api_view, permission_classes
@@ -73,3 +74,17 @@ def login_auth_token(request):
             {'error': 'Credenciais inválidas'},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+@api_view(['POST'])
+def register_user(request):
+    serialized = UserSerializer(data=request.DATA)
+    if serialized.is_valid():
+        User.objects.create_user(
+            serialized.init_data['email'],
+            serialized.init_data['username'],
+            serialized.init_data['password']
+        )
+        return Response(serialized.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
