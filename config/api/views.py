@@ -63,9 +63,9 @@ def register_user(request):
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
         User.objects.create_user(
-            serialized.init_data['email'],
-            serialized.init_data['username'],
-            serialized.init_data['password']
+            serialized.validated_data['email'],
+            serialized.validated_data['username'],
+            serialized.validated_data['password']
         )
         return Response(serialized.data, status=status.HTTP_201_CREATED)
     else:
