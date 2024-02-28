@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate
-from rest_framework.pagination import PageNumberPagination
 from rest_framework import viewsets
 from django.contrib.auth.models import User
 from api.serializers import MovieSerializer, ReviewSerializer, UserSerializer
@@ -20,23 +19,6 @@ class MovieViewSet(viewsets.ModelViewSet):
     model = Movie
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['genres', 'metascore']
-
-    pagination_class = PageNumberPagination
-    page_size = 15
-
-    def get_queryset(self):
-        return Movie.objects.all()
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
