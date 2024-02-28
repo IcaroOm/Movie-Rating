@@ -60,7 +60,7 @@ def login_auth_token(request):
 
 @api_view(['POST'])
 def register_user(request):
-    serialized = UserSerializer(data=request.DATA)
+    serialized = UserSerializer(data=request.data)
     if serialized.is_valid():
         User.objects.create_user(
             serialized.init_data['email'],
